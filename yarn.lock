@@ -2091,13 +2091,12 @@ __metadata:
   dependencies:
     "@types/jest": 29.5.2
     "@types/ramda": ^0.29.2
-    "@types/react": ~18.0.38
+    "@types/react": ~18.2.14
     "@types/react-native": ~0.70.14
     "@types/uuid": ^9.0.2
     babel-jest: 29.5.0
-    babel-preset-expo: ^9.5.0
+    babel-preset-expo: ^9.3.2
     babel-preset-react-native: ^4.0.1
-    deprecated-react-native-prop-types: ^4.1.0
     expo: ^46.0.21
     expo-random: ^12.3.0
     jest-expo: ^46.0.2
@@ -2114,8 +2113,8 @@ __metadata:
     typescript: ~5.1.5
     uuid: 9.0.0
   peerDependencies:
-    react: "*"
-    react-native: "*"
+    react: ">=16.0.0"
+    react-native: ">=0.70.0"
     react-native-webview: "*"
   languageName: unknown
   linkType: soft
@@ -2638,13 +2637,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-colors@npm:*":
-  version: 0.73.0
-  resolution: "@react-native/normalize-colors@npm:0.73.0"
-  checksum: 0b98021f4d40e497f25e96d610d98602cb6d80d455e3a93676e99922c7cfa03829c531eae110b62585bfa567bb4d2b28f91f0b06f8539244619baac2c0bee9a9
-  languageName: node
-  linkType: hard
-
 "@react-native/polyfills@npm:2.0.0":
   version: 2.0.0
   resolution: "@react-native/polyfills@npm:2.0.0"
@@ -2816,7 +2808,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
+"@types/react@npm:*, @types/react@npm:~18.2.14":
   version: 18.2.14
   resolution: "@types/react@npm:18.2.14"
   dependencies:
@@ -2824,17 +2816,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: a6a5e8cc78f486b9020d1ad009aa6c56943c68c7c6376e0f8399e9cbcd950b7b8f5d73f00200f5379f5e58d31d57d8aed24357f301d8e86108cd438ce6c8b3dd
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:~18.0.38":
-  version: 18.0.38
-  resolution: "@types/react@npm:18.0.38"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 34481c79f4f7ea2aefbaa45281319dc183200230d932d968463eba1643bd3635073d0a17c5c613150a69e36ca18b811ecffafea6384fa3dff3b5203866339d69
   languageName: node
   linkType: hard
 
@@ -3919,7 +3900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-expo@npm:^9.5.0":
+"babel-preset-expo@npm:^9.3.2":
   version: 9.5.0
   resolution: "babel-preset-expo@npm:9.5.0"
   dependencies:
@@ -5125,17 +5106,6 @@ __metadata:
   version: 1.1.2
   resolution: "depd@npm:1.1.2"
   checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
-  languageName: node
-  linkType: hard
-
-"deprecated-react-native-prop-types@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "deprecated-react-native-prop-types@npm:4.1.0"
-  dependencies:
-    "@react-native/normalize-colors": "*"
-    invariant: "*"
-    prop-types: "*"
-  checksum: bba96622e196f650e782963598a2868a9c89b32e88fba1555fe1308d324eb387ab2a1f16235162b7bccc1900e8f43b7f8eae4f149a37f10cdf52e071990a7c9a
   languageName: node
   linkType: hard
 
@@ -6466,7 +6436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:*, invariant@npm:2.2.4, invariant@npm:^2.2.2, invariant@npm:^2.2.4":
+"invariant@npm:2.2.4, invariant@npm:^2.2.2, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -7549,7 +7519,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -9241,17 +9211,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*":
-  version: 15.8.1
-  resolution: "prop-types@npm:15.8.1"
-  dependencies:
-    loose-envify: ^1.4.0
-    object-assign: ^4.1.1
-    react-is: ^16.13.1
-  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
-  languageName: node
-  linkType: hard
-
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0"
@@ -9364,13 +9323,6 @@ __metadata:
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
-  languageName: node
-  linkType: hard
-
-"react-is@npm:^16.13.1":
-  version: 16.13.1
-  resolution: "react-is@npm:16.13.1"
-  checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
   languageName: node
   linkType: hard
 

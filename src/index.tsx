@@ -1,15 +1,13 @@
-import React, {ReactNode} from 'react';
+import React, {forwardRef, ReactElement, useEffect, useImperativeHandle, useState} from 'react';
 import {
   TouchableOpacity,
   View,
   Text,
   Modal,
   StyleSheet,
-  Image,
+  Image, StyleProp, ViewStyle,
 } from 'react-native';
-import {ViewPropTypes} from 'deprecated-react-native-prop-types';
 import {WebView} from 'react-native-webview';
-import PropTypes from 'prop-types';
 import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
 import 'react-native-get-random-values';
 import {v4} from 'uuid';
@@ -29,41 +27,6 @@ export interface LinkedInToken {
 export interface ErrorType {
   type?: string
   message?: string
-}
-
-interface State {
-  raceCondition: boolean
-  modalVisible: boolean
-  authState: string
-  logout: boolean
-}
-
-interface Props {
-  clientID: string
-  clientSecret?: string
-  redirectUri: string
-  authState?: string
-  permissions: string[]
-  linkText?: string
-  containerStyle?: any
-  wrapperStyle?: any
-  closeStyle?: any
-  animationType?: 'none' | 'fade' | 'slide'
-  areaTouchText: {
-    top?: number,
-    bottom?: number,
-    left?: number,
-    right?: number
-  }
-  shouldGetAccessToken?: boolean
-  isDisabled?: boolean
-  renderButton?(): ReactNode
-  renderClose?(): ReactNode
-  onOpen?(): void
-  onClose?(): void
-  onSignIn?(): void
-  onSuccess(result: LinkedInToken): void
-  onError(error: ErrorType): void
 }
 
 export const cleanUrlString = (state: string) => state.replace('#!', '');
@@ -104,7 +67,7 @@ export const getAuthorizationUrl = (
     clientID,
     permissions,
     redirectUri,
-  }: Partial<Props>
+  }: Partial<LinkedInModalPropTypes>
 ) =>
   `${AUTHORIZATION_URL}?${querystring.stringify({
     response_type: 'code',
@@ -120,7 +83,7 @@ export const getPayloadForToken = (
     clientSecret,
     code,
     redirectUri,
-  }: Partial<Props> & { code: string }
+  }: Partial<LinkedInModalPropTypes> & {code: string}
 ) =>
   querystring.stringify({
     grant_type: 'authorization_code',
@@ -147,28 +110,32 @@ export const logError = (error: ErrorType) =>
 export const onLoadStart = async (
   url: string,
   authState: string,
-  onSuccess: Props['onSuccess'],
-  onError: Props['onError'],
+  onSuccess: LinkedInModalPropTypes['onSuccess'],
+  onError: LinkedInModalPropTypes['onError'],
   close: any,
   getAccessToken: (token: string) => Promise<LinkedInToken>,
   shouldGetAccessToken?: boolean,
 ) => {
   if (isErrorUrl(url)) {
-    const err = getErrorFromUrl(url)
-    close()
-    onError(transformError(err))
+    const err = getErrorFromUrl(url);
+    close();
+    if (onError) {
+      onError(transformError(err));
+    }
   } else {
     const { code, state } = getCodeAndStateFromUrl(url)
     if (!shouldGetAccessToken) {
       onSuccess({ authentication_code: code as string })
     } else if (state !== authState) {
-      onError({
-        type: 'state_not_match',
-        message: `state is not the same ${state}`,
-      })
+      if (onError) {
+        onError({
+          type: 'state_not_match',
+          message: `state is not the same ${state}`,
+        });
+      }
     } else {
-      const token: LinkedInToken = await getAccessToken(code as string)
-      onSuccess(token)
+      const token: LinkedInToken = await getAccessToken(code as string);
+      onSuccess(token);
     }
   }
 };
@@ -200,129 +167,131 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class LinkedInModal extends React.Component<Props, State> {
-  static propTypes = {
-    clientID: PropTypes.string.isRequired,
-    clientSecret: PropTypes.string,
-    redirectUri: PropTypes.string.isRequired,
-    permissions: PropTypes.array,
-    authState: PropTypes.string,
-    onSuccess: PropTypes.func.isRequired,
-    onError: PropTypes.func,
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
-    onSignIn: PropTypes.func,
-    linkText: PropTypes.string,
-    areaTouchText: PropTypes.object,
-    renderButton: PropTypes.func,
-    renderClose: PropTypes.func,
-    containerStyle: ViewPropTypes.style,
-    wrapperStyle: ViewPropTypes.style,
-    closeStyle: ViewPropTypes.style,
-    animationType: PropTypes.string,
-    shouldGetAccessToken: PropTypes.bool,
-  }
-  static defaultProps = {
-    onError: logError,
-    permissions: ['r_liteprofile', 'r_emailaddress'],
-    linkText: 'Login with LinkedIn',
-    areaTouchText: {top: 20, bottom: 20, left: 50, right: 50},
-    animationType: 'fade',
-    containerStyle: StyleSheet.create({}),
-    wrapperStyle: StyleSheet.create({}),
-    closeStyle: StyleSheet.create({}),
-    shouldGetAccessToken: true,
-  }
-  state: State = {
-    raceCondition: false,
-    modalVisible: false,
-    authState: v4(),
-    logout: false,
-  }
+export default forwardRef(function LinkedInModal(
+  {
+    clientID,
+    clientSecret,
+    redirectUri,
+    permissions = ['r_liteprofile', 'r_emailaddress'],
+    authState,
+    onSuccess,
+    onError = logError,
+    onOpen,
+    onClose,
+    onSignIn,
+    linkText = 'Login with LinkedIn',
+    areaTouchText = {top: 20, bottom: 20, left: 50, right: 50},
+    renderButton,
+    renderClose,
+    containerStyle = StyleSheet.create({}),
+    wrapperStyle = StyleSheet.create({}),
+    closeStyle = StyleSheet.create({}),
+    animationType = 'fade',
+    shouldGetAccessToken = true,
+    isDisabled = false,
+  }: LinkedInModalPropTypes,
+  ref: any,) : ReactElement {
 
-  componentDidUpdate(nextProps: Props, nextState: State) {
-    if (
-      nextState.modalVisible !== this.state.modalVisible &&
-      nextState.modalVisible === true
-    ) {
-      const authState = nextProps.authState || v4();
-      this.setState(() => ({ raceCondition: false, authState }));
+  const [raceCondition, setRaceCondition] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [currentAuthState, setCurrentAuthState] = useState<string>(v4());
+  const [logout, setLogout] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (modalVisible) {
+      const tmpAuthState = authState || v4();
+      setRaceCondition(false);
+      setCurrentAuthState(tmpAuthState);
     }
-  }
+  }, [modalVisible]);
 
-  onNavigationStateChange = async ({ url }: any) => {
-    const {raceCondition} = this.state;
-    const {redirectUri, onError, shouldGetAccessToken} = this.props;
+  // The component instance will be extended
+  // with whatever you return from the callback passed
+  // as the second argument
+  useImperativeHandle(ref, () => ({
+    open: async() => {
+      await _open();
+    },
 
+    close: async() => {
+      await _close();
+    },
+
+    logoutAsync: async() => {
+      await _logoutAsync();
+    },
+  }));
+
+  const onNavigationStateChange = async ({url}: any) => {
     if (url.includes(redirectUri) && !raceCondition) {
-      const {onSignIn, onSuccess} = this.props
-      const {authState } = this.state
-      this.setState({ modalVisible: false, raceCondition: true})
+      setModalVisible(false);
+      setRaceCondition(true);
+
       if (onSignIn) {
         onSignIn();
       }
       await onLoadStart(
         url,
-        authState,
+        currentAuthState,
         onSuccess,
         onError,
-        this.close,
-        this.getAccessToken,
+        _close,
+        _getAccessToken,
         shouldGetAccessToken,
       );
     }
   }
 
-  getAuthorizationUrl = () =>
-    getAuthorizationUrl({...this.props, authState: this.state.authState});
-
-  getAccessToken = async (code: string) => {
-    const {onError} = this.props;
-    const payload: string = getPayloadForToken({...this.props, code});
+  const _getAccessToken = async (code: string) => {
+    const payload: string = getPayloadForToken({
+      clientID,
+      clientSecret,
+      code,
+      redirectUri,
+    });
     const token = await fetchToken(payload);
     if (token.error) {
-      onError(transformError(token));
+      if (onError) {
+        onError(transformError(token));
+      }
       return {};
     }
     return token;
   };
 
-  close = () => {
-    const {onClose} = this.props;
+  const _close = () => {
     if (onClose) {
       onClose();
     }
-    this.setState({modalVisible: false});
+    setModalVisible(false);
   };
 
-  open = () => {
-    const {onOpen} = this.props;
+  const _open = () => {
     if (onOpen) {
       onOpen();
     }
-    this.setState({modalVisible: true});
+    setModalVisible(true);
   };
 
-  logoutAsync = () =>
+  const _logoutAsync = () =>
     new Promise<void>(resolve => {
-      this.setState({logout: true});
+      setLogout(true);
       setTimeout(() => {
-        this.setState({logout: false});
+        setLogout(false);
         resolve();
       }, 3000);
     });
 
-  renderButton = () => {
-    const {renderButton, linkText, areaTouchText, isDisabled = false} = this.props;
+  const getButtonElement = (): ReactElement => {
     if (renderButton) {
       return(
         <TouchableOpacity
           accessibilityRole={'button'}
           accessibilityState={{disabled: isDisabled}}
-          onPress={this.open}
+          onPress={_open}
           hitSlop={areaTouchText}
           disabled={isDisabled}>
-          {renderButton()}
+          {renderButton}
         </TouchableOpacity>
       );
     }
@@ -330,19 +299,18 @@ export default class LinkedInModal extends React.Component<Props, State> {
       <TouchableOpacity
         accessibilityRole={'button'}
         accessibilityState={{disabled: isDisabled}}
-        onPress={this.open}
+        onPress={_open}
         hitSlop={areaTouchText}
         disabled={isDisabled}
       >
         <Text>{linkText}</Text>
       </TouchableOpacity>
     );
-  }
+  };
 
-  renderClose = () => {
-    const {renderClose} = this.props;
+  const getCloseElement = (): ReactElement => {
     if (renderClose) {
-      return renderClose();
+      return renderClose;
     }
     return (
       <Image
@@ -353,70 +321,95 @@ export default class LinkedInModal extends React.Component<Props, State> {
         }}
       />
     );
-  }
+  };
 
-  renderWebview = () => {
-    const { modalVisible } = this.state
+  const getWebviewElement = () => {
     if (!modalVisible) {
       return null;
     }
 
+    const url = getAuthorizationUrl({
+      authState,
+      clientID,
+      permissions,
+      redirectUri,
+    });
+
     return (
       <WebView
-        source={{ uri: this.getAuthorizationUrl() }}
-        onNavigationStateChange={this.onNavigationStateChange}
-        startInLoadingState
-        javaScriptEnabled
-        domStorageEnabled
+        source={url ? {uri: url} : undefined}
+        onNavigationStateChange={onNavigationStateChange}
+        startInLoadingState={true}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
         injectedJavaScript={injectedJavaScript}
-        sharedCookiesEnabled
+        sharedCookiesEnabled={true}
         incognito={true}
       />
     );
-  }
+  };
 
-  render() {
-    const {modalVisible, logout} = this.state;
-    const {
-      animationType,
-      containerStyle,
-      wrapperStyle,
-      closeStyle,
-    } = this.props;
-    return (
-      <View>
-        {this.renderButton()}
-        <Modal
-          animationType={animationType}
-          transparent
-          visible={modalVisible}
-          onRequestClose={this.close}
-        >
-          <View style={[styles.container, containerStyle]}>
-            <View style={[styles.wrapper, wrapperStyle]}>
-              {this.renderWebview()}
-            </View>
-            <TouchableOpacity
-              onPress={this.close}
-              style={[styles.close, closeStyle]}
-              accessibilityRole={'button'}
-            >
-              {this.renderClose()}
-            </TouchableOpacity>
+  return (
+    <View>
+      {getButtonElement()}
+      <Modal
+        animationType={animationType}
+        transparent
+        visible={modalVisible}
+        onRequestClose={_close}
+      >
+        <View style={[styles.container, containerStyle]}>
+          <View style={[styles.wrapper, wrapperStyle]}>
+            {getWebviewElement()}
           </View>
-        </Modal>
-        {logout && (
-          <View style={{ width: 1, height: 1 }}>
-            <WebView
-              source={{ uri: LOGOUT_URL }}
-              javaScriptEnabled
-              domStorageEnabled
-              sharedCookiesEnabled
-              onLoadEnd={() => this.setState({ logout: false })}
-            />
-          </View>
-        )}
-      </View>
-    );
-  }
+          <TouchableOpacity
+            onPress={_close}
+            style={[styles.close, closeStyle]}
+            accessibilityRole={'button'}
+          >
+            {getCloseElement()}
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      {logout && (
+        <View style={{width: 1, height: 1}}>
+          <WebView
+            source={{ uri: LOGOUT_URL }}
+            javaScriptEnabled
+            domStorageEnabled
+            sharedCookiesEnabled
+            onLoadEnd={() => setLogout(false)}
+          />
+        </View>
+      )}
+    </View>
+  );
+});
+
+export type LinkedInModalPropTypes = {
+  clientID: string;
+  clientSecret?: string;
+  redirectUri: string;
+  permissions?: string[];
+  authState?: string;
+  onSuccess: (result: LinkedInToken) => void;
+  onError?: (error: ErrorType) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onSignIn?: () => void;
+  linkText?: string;
+  areaTouchText?: {
+    top?: number,
+    bottom?: number,
+    left?: number,
+    right?: number
+  };
+  renderButton?: ReactElement;
+  renderClose?: ReactElement;
+  containerStyle?: StyleProp<ViewStyle>;
+  wrapperStyle?: StyleProp<ViewStyle>;
+  closeStyle?: StyleProp<ViewStyle>;
+  animationType?: 'none' | 'fade' | 'slide';
+  shouldGetAccessToken?: boolean;
+  isDisabled?: boolean;
 }

@@ -12,6 +12,7 @@
     "module": "es6",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "preserveConstEnums": true,
