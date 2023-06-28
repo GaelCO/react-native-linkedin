@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
+// 'react-native-get-random-values' import is needed for uuid
 import 'react-native-get-random-values';
-import {v4} from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import querystring from 'query-string';
 
 const AUTHORIZATION_URL: string =
@@ -194,12 +195,12 @@ export default forwardRef(function LinkedInModal(
 
   const [raceCondition, setRaceCondition] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [currentAuthState, setCurrentAuthState] = useState<string>(v4());
+  const [currentAuthState, setCurrentAuthState] = useState<string>(uuidv4());
   const [logout, setLogout] = useState<boolean>(false);
 
   useEffect(() => {
     if (modalVisible) {
-      const tmpAuthState = authState || v4();
+      const tmpAuthState = authState ?? uuidv4();
       setRaceCondition(false);
       setCurrentAuthState(tmpAuthState);
     }

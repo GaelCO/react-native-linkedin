@@ -54,10 +54,10 @@ You should be aware that key can be found if you store it directly to your code.
 
 ```JavaScript
 // See ./App.tsx file for details
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, {ReactElement, useRef} from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import LinkedInModal from 'react-native-linkedin'
+import LinkedInModal from 'react-native-linkedin';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,29 +68,28 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class AppContainer extends React.Component {
-  linkedRef = React.createRef<LinkedInModal>()
-  render() {
-    return (
-      <View style={styles.container}>
-        <LinkedInModal
-          ref={this.linkedRef}
-          clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
-          clientSecret="[ Your client secret from https://www.linkedin.com/developer/apps ]"
-          redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
-          onSuccess={token => console.log(token)}
-        />
-        <Button title="Log Out" onPress={this.linkedRef.current.logoutAsync()} />
-      </View>
-    )
-  }
+export default function AppContainer() : ReactElement {
+  linkedRef = useRef<any>();
+  
+  return (
+    <View style={styles.container}>
+      <LinkedInModal
+        ref={this.linkedRef}
+        clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
+        clientSecret="[ Your client secret from https://www.linkedin.com/developer/apps ]"
+        redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
+        onSuccess={token => console.log(token)}
+      />
+      <Button title="Log Out" onPress={this.linkedRef.current.logoutAsync()} />
+    </View>
+  )
 }
 ```
 
 ## Props
 
 | Name                     | Type                          | Required                                                                              | Default                             | Description                                                                                                                                                                                              |
-| ------------------------ | ----------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------------------ |-------------------------------| ------------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | clientID                 | string                        | **required**                                                                          |                                     | [Your client id](https://www.linkedin.com/developer/apps)                                                                                                                                                |
 | <s>clientSecret</s>      | string                        | use **shouldGetAccessToken={false}** and read **authorization_code** onSuccess return |                                     | Should not be stored in app [WARNING! Your client secret](https://docs.microsoft.com/en-us/linkedin/shared/api-guide/best-practices/secure-applications?context=linkedin/context#api-key-and-secret-key) |
 | redirectUri              | string                        | **required**                                                                          |                                     | [Your redirectUri](https://www.linkedin.com/developer/apps)                                                                                                                                              |
@@ -100,16 +99,16 @@ export default class AppContainer extends React.Component {
 | onClose                  | function                      | optional                                                                              |                                     | Function will be call back on close modal                                                                                                                                                                |
 | onOpen                   | function                      | optional                                                                              |                                     | Function will be call back on open modal                                                                                                                                                                 |
 | onSignIn                 | function                      | optional                                                                              |                                     | Function will be call back when the user sign in                                                                                                                                                         |
-| permissions              | array                         | optional                                                                              | `'r_liteprofile', 'r_emailaddress'` | The LinkedIn access token permissions                                                                                                                                                                    |
-| renderButton             | function                      | optional                                                                              |                                     | Render function for customize LinkedIn button                                                                                                                                                            |
-| renderClose              | function                      | optional                                                                              |                                     | Render function for customize close button                                                                                                                                                               |
+| permissions              | string[]                      | optional                                                                              | `'r_liteprofile', 'r_emailaddress'` | The LinkedIn access token permissions                                                                                                                                                                    |
+| renderButton             | ReactElement                  | optional                                                                              |                                     | Render for customize LinkedIn button                                                                                                                                                            |
+| renderClose              | ReactElement                  | optional                                                                              |                                     | Render for customize close button                                                                                                                                                               |
 | linkText                 | string                        | optional                                                                              | `'Login with LinkedIn'`             | Link label                                                                                                                                                                                               |
-| containerStyle           | ViewPropTypes.style           | optional                                                                              |                                     | Customize container style                                                                                                                                                                                |
-| wrapperStyle             | ViewPropTypes.style           | optional                                                                              |                                     | Customize wrapper style                                                                                                                                                                                  |
-| closeStyle               | ViewPropTypes.style           | optional                                                                              |                                     | Customize close style                                                                                                                                                                                    |
+| containerStyle           | StyleProp<ViewStyle>          | optional                                                                              |                                     | Customize container style                                                                                                                                                                                |
+| wrapperStyle             | StyleProp<ViewStyle>          | optional                                                                              |                                     | Customize wrapper style                                                                                                                                                                                  |
+| closeStyle               | StyleProp<ViewStyle>          | optional                                                                              |                                     | Customize close style                                                                                                                                                                                    |
 | animationType            | Modal.propTypes.animationType | optional                                                                              | `fade`                              | Customize animationType style: 'none', 'slide' or 'fade'                                                                                                                                                 |
 | **shouldGetAccessToken** | bool                          | optional                                                                              | `true`                              | Set to false to receive the 'authorization code' rather then the 'access token'                                                                                                                          |
-| areaTouchText | object      | optional       | `{top: 20, bottom: 20, left: 50, right: 50}`          | Set values for to increase the text touch area          |
+| areaTouchText | object                        | optional       | `{top: 20, bottom: 20, left: 50, right: 50}`          | Set values for to increase the text touch area          |
 
 ## Contribution
 
