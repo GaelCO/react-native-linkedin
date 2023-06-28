@@ -2,8 +2,8 @@
 
 /* eslint-disable */
 
-const semver = require('semver')
-const pkg = require('../package.json')
+import semver from 'semver'
+import pkg from '../package.json'
 
 const incType = process.argv[2]
 if (

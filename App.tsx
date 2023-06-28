@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -6,11 +6,11 @@ import {
   Button,
   ActivityIndicator,
   StatusBar,
-} from 'react-native'
+} from 'react-native';
 
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from './config'
+import {CLIENT_ID, CLIENT_SECRET, REDIRECT_URL} from './config';
 
-import LinkedInModal, { LinkedInToken } from './src/'
+import LinkedInModal, {LinkedInToken} from './src/';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-})
+});
 
 interface State {
   access_token?: string
@@ -84,20 +84,20 @@ export default class AppContainer extends React.Component<{}, State> {
   }
 
   getUser = async (data: LinkedInToken) => {
-    const { access_token, authentication_code } = data
+    const {access_token, authentication_code} = data;
     if (!authentication_code) {
-      this.setState({ refreshing: true })
+      this.setState({refreshing: true});
 
       const response = await fetch('https://api.linkedin.com/v2/me', {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + access_token,
         },
-      })
-      const payload = await response.json()
-      this.setState({ ...payload, refreshing: false })
+      });
+      const payload = await response.json();
+      this.setState({...payload, refreshing: false});
     } else {
-      alert(`authentication_code = ${authentication_code}`)
+      alert(`authentication_code = ${authentication_code}`);
     }
   }
 
@@ -112,20 +112,20 @@ export default class AppContainer extends React.Component<{}, State> {
           <Text style={styles.value}>{value}</Text>
         </View>
       </View>
-    ) : null
+    ) : null;
   }
 
   signOut = () => {
-    this.setState({ refreshing: true })
+    this.setState({refreshing: true});
     this.modal.current
       ?.logoutAsync()
       .then(() =>
         this.setState({ localizedFirstName: undefined, refreshing: false }),
-      )
+      );
   }
 
   render() {
-    const { refreshing, localizedFirstName } = this.state
+    const {refreshing, localizedFirstName} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.linkedInContainer}>
@@ -153,6 +153,6 @@ export default class AppContainer extends React.Component<{}, State> {
           </>
         )}
       </View>
-    )
+    );
   }
 }

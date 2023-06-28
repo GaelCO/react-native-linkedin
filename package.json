@@ -1,6 +1,6 @@
 {
   "name": "@gcou/react-native-linkedin",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "main": "lib/index.tsx",
   "description": "React-Native LinkedIn, a simple LinkedIn login library for React-Native with WebView and Modal - compatibility with RN 0.69",
   "repository": {
@@ -29,36 +29,36 @@
     "linkedin"
   ],
   "dependencies": {
-    "deprecated-react-native-prop-types": "^2.3.0",
+    "deprecated-react-native-prop-types": "^4.1.0",
     "expo-random": "^12.3.0",
-    "query-string": "7.1.1",
-    "ramda": "0.28.0",
+    "query-string": "8.1.0",
+    "ramda": "0.29.0",
     "react-native-get-random-values": "^1.8.0",
     "uuid": "9.0.0"
   },
   "devDependencies": {
-    "@types/jest": "29.0.3",
-    "@types/ramda": "^0.28.15",
-    "@types/react": "~18.0.21",
-    "@types/react-native": "~0.70.3",
-    "@types/uuid": "^8.3.4",
-    "babel-jest": "29.0.3",
-    "babel-preset-expo": "^9.2.0",
+    "@types/jest": "29.5.2",
+    "@types/ramda": "^0.29.2",
+    "@types/react": "~18.0.38",
+    "@types/react-native": "~0.70.14",
+    "@types/uuid": "^9.0.2",
+    "babel-jest": "29.5.0",
+    "babel-preset-expo": "^9.5.0",
     "babel-preset-react-native": "^4.0.1",
-    "expo": "^46.0.10",
-    "jest-expo": "^46.0.1",
+    "expo": "^46.0.21",
+    "jest-expo": "^46.0.2",
     "json": "^11.0.0",
     "react": "18.2.0",
-    "react-native": "0.70.1",
-    "react-native-webview": "11.23.1",
+    "react-native": "0.70.10",
+    "react-native-webview": "13.2.2",
     "react-test-renderer": "18.2.0",
     "tslint": "6.1.3",
     "tslint-config-prettier": "1.18.0",
-    "typescript": "~4.8.3"
+    "typescript": "~5.1.5"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
+    "react": ">=16.0.0",
+    "react-native": ">=0.70.0",
     "react-native-webview": "*"
   },
   "jest": {
@@ -80,5 +80,5 @@
   "directories": {
     "lib": "lib"
   },
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.6.0"
 }
