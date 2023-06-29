@@ -13,6 +13,8 @@ local.properties
 *.iml
 *.hprof
 .cxx/
+*.keystore
+!debug.keystore
 
 # Runtime data
 pids
@@ -84,3 +86,6 @@ env.json
 lib/
 .expo/
 config.ts
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*

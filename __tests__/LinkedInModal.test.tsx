@@ -26,9 +26,9 @@ global.fetch = jest.fn().mockImplementation(
           access_token: 'access_token',
           expires_in: 'expires_in',
         }),
-      })
+      });
     }),
-)
+);
 
 it('<LinkedInModal /> render correctly', () => {
   const tree = renderer
@@ -44,7 +44,7 @@ it('<LinkedInModal /> render correctly', () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-})
+});
 
 it('cleanUrlString', () => {
   expect(cleanUrlString('https://xaviercarpentier.com#!')).toBe(
@@ -53,13 +53,13 @@ it('cleanUrlString', () => {
   expect(cleanUrlString('https://xaviercarpentier.com')).toBe(
     'https://xaviercarpentier.com',
   );
-})
+});
 
 it('getCodeAndStateFromUrl', () => {
   expect(
     getCodeAndStateFromUrl('https://xaviercarpentier.com?code=code&state=1234'),
-  ).toMatchObject({ code: 'code', state: '1234' });
-})
+  ).toMatchObject({code: 'code', state: '1234'});
+});
 
 it('isErrorUrl', () => {
   expect(
@@ -67,7 +67,7 @@ it('isErrorUrl', () => {
       'https://xaviercarpentier.com?error=error&error_description=error_description',
     ),
   ).toBe(true);
-})
+});
 
 it('getErrorFromUrl', () => {
   expect(
@@ -75,7 +75,7 @@ it('getErrorFromUrl', () => {
       'https://xaviercarpentier.com?error=error&error_description=error_description',
     ),
   ).toMatchObject({error: 'error', error_description: 'error_description'});
-})
+});
 
 it('transformError', () => {
   expect(
@@ -87,7 +87,7 @@ it('transformError', () => {
     type: 'error',
     message: 'error_description',
   });
-})
+});
 
 it('getAuthorizationUrl', () => {
   expect(
@@ -103,7 +103,7 @@ it('getAuthorizationUrl', () => {
       'response_type=code&scope=r_basicprofile%20r_emailaddress&' +
       'state=authState',
   );
-})
+});
 
 it('getPayloadForToken', () => {
   expect(
@@ -118,30 +118,30 @@ it('getPayloadForToken', () => {
       'code=code&grant_type=authorization_code&' +
       'redirect_uri=https%3A%2F%2Fxaviercarpentier.com',
   );
-})
+});
 
 it('fetchToken', async () => {
-  const token = await fetchToken('payload')
+  const token = await fetchToken('payload');
   expect(token).toMatchObject({
     access_token: 'access_token',
     expires_in: 'expires_in',
   });
-})
+});
 
 it('logError', async () => {
   logError({type: 'test_error', message: 'test error'});
-})
+});
 
 it('onLoadStart error', async () => {
   await onLoadStart(
     'http://url.com?error=error',
     '',
     () => {},
-    (error: any) => expect(error).toEqual({ type: 'error', message: '' }),
+    (error: any) => expect(error).toEqual({type: 'error', message: ''}),
     () => {},
     () => new Promise(resolve => resolve({})),
-  )
-})
+  );
+});
 
 it('onLoadStart success', async () => {
   await onLoadStart(
@@ -157,7 +157,7 @@ it('onLoadStart success', async () => {
     () => new Promise(resolve => resolve({})),
     true,
   );
-})
+});
 
 it('onLoadStart error code & state', async () => {
   await onLoadStart(
@@ -172,4 +172,4 @@ it('onLoadStart error code & state', async () => {
     () => {},
     () => new Promise(resolve => resolve({})),
   );
-})
+});

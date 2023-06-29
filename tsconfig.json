@@ -2,6 +2,8 @@
   "include": [
     "src"
   ],
+  "extends": "expo/tsconfig.base",
+  /* Recommended React Native TSConfig base */
   "compilerOptions": {
     "declaration": true,
     "outDir": "./lib",
@@ -38,10 +40,9 @@
     "typeRoots": [
       "./node_modules/@types",
       "./@types"
-    ]
+    ],
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
   ],
-  "extends": "expo/tsconfig.base"
 }

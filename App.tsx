@@ -60,20 +60,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AppContainer() : ReactElement {
-  const [accessToken, setAccessToken] = useState<string | undefined>();
-  const [expiresIn, setExpiresIn] = useState<any | undefined>();
+export default function AppContainer(): ReactElement {
+  const [, setAccessToken] = useState<string | undefined>();
+  const [, setExpiresIn] = useState<any | undefined>();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [localizedFirstName, setLocalizedFirstName] = useState<string>();
-  const [message, setMessage] = useState<string | undefined>();
-
+  const [, setMessage] = useState<string | undefined>();
 
   const modal = useRef<any>();
 
   useEffect(() => {
-    StatusBar.setHidden(true)
+    StatusBar.setHidden(true);
   }, []);
-
 
   const getUser = async (data: LinkedInToken) => {
     const {access_token, authentication_code} = data;
@@ -95,7 +93,7 @@ export default function AppContainer() : ReactElement {
     } else {
       alert(`authentication_code = ${authentication_code}`);
     }
-  }
+  };
 
   const renderItem = (label: string, value: string): ReactElement => {
     return value ? (
@@ -108,17 +106,18 @@ export default function AppContainer() : ReactElement {
           <Text style={styles.value}>{value}</Text>
         </View>
       </View>
-    ) : <></>;
-  }
+    ) : (
+      <></>
+    );
+  };
 
   const signOut = () => {
     setRefreshing(true);
-    modal.current?.logoutAsync()
-      .then(() => {
-        setLocalizedFirstName(undefined);
-        setRefreshing(false);
-      });
-  }
+    modal.current?.logoutAsync().then(() => {
+      setLocalizedFirstName(undefined);
+      setRefreshing(false);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -132,7 +131,9 @@ export default function AppContainer() : ReactElement {
         />
         <Button
           title="Open from external"
-          onPress={() => {modal.current?.open()}}
+          onPress={() => {
+            modal.current?.open();
+          }}
         />
       </View>
 
