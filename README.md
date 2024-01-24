@@ -31,6 +31,12 @@ Simple <strong>LinkedIn</strong> login library for <strong>React-Native</strong>
 $ yarn add @gcou/react-native-linkedin
 ```
 
+If your project uses expo >= 48, then you need to add expo-crypto to your project.
+The [uuid](https://www.npmjs.com/package/uuid) library uses the Expo module if present. If Expo >= 48, then the crypto elements are in the expo-crypto module
+```bash
+$ yarn add expo-crypto
+```
+
 ## Security
 
 Please note that you should give your linkedin client id but not your secret key to this component.
