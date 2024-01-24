@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import React, {
   forwardRef,
   ReactElement,
@@ -18,7 +19,7 @@ import {
 import {WebView} from 'react-native-webview';
 import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
 import querystring from 'query-string';
-import {randomUUID} from "expo-crypto";
+import {v4 as uuid} from 'uuid'
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
@@ -198,12 +199,12 @@ export default forwardRef(function LinkedInModal(
 ): ReactElement {
   const [raceCondition, setRaceCondition] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [currentAuthState, setCurrentAuthState] = useState<string>(randomUUID());
+  const [currentAuthState, setCurrentAuthState] = useState<string>(uuid());
   const [logout, setLogout] = useState<boolean>(false);
 
   useEffect(() => {
     if (modalVisible) {
-      const tmpAuthState = authState ?? randomUUID();
+      const tmpAuthState = authState ?? uuid();
       setRaceCondition(false);
       setCurrentAuthState(tmpAuthState);
     }
@@ -332,10 +333,10 @@ export default forwardRef(function LinkedInModal(
     }
 
     const url = getAuthorizationUrl({
-      authState,
-      clientID,
-      permissions,
-      redirectUri,
+      authState: currentAuthState,
+      clientID: clientID,
+      permissions: permissions,
+      redirectUri: redirectUri,
     });
 
     return (
