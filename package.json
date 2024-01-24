@@ -1,7 +1,7 @@
 {
   "name": "@gcou/react-native-linkedin",
   "version": "2.3.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "lib/index.tsx",
   "description": "React-Native LinkedIn, a simple LinkedIn login library for React-Native with WebView and Modal - compatibility with RN 0.73",
   "repository": {
     "type": "git",
