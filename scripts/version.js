@@ -1,7 +1,5 @@
 #!/usr/bin/env node
+import pkg from '../package.json';
 
-/* eslint-disable */
-import pkg from '../package.json'
-
-console.log(pkg.version)
-process.exit()
+console.log(pkg.version);
+process.exit();

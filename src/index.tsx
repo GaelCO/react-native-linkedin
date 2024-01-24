@@ -1,33 +1,41 @@
-import React, {forwardRef, ReactElement, useEffect, useImperativeHandle, useState} from 'react';
+import 'react-native-get-random-values';
+import React, {
+  forwardRef,
+  ReactElement,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import {
   TouchableOpacity,
   View,
   Text,
   Modal,
   StyleSheet,
-  Image, StyleProp, ViewStyle,
+  Image,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
-// 'react-native-get-random-values' import is needed for uuid
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
 import querystring from 'query-string';
+import {v4 as uuid} from 'uuid';
 
 const AUTHORIZATION_URL: string =
-  'https://www.linkedin.com/oauth/v2/authorization'
-const ACCESS_TOKEN_URL: string = 'https://www.linkedin.com/oauth/v2/accessToken'
-const LOGOUT_URL: string = 'https://www.linkedin.com/m/logout'
+  'https://www.linkedin.com/oauth/v2/authorization';
+const ACCESS_TOKEN_URL: string =
+  'https://www.linkedin.com/oauth/v2/accessToken';
+const LOGOUT_URL: string = 'https://www.linkedin.com/m/logout';
 
 export interface LinkedInToken {
-  authentication_code?: string
-  access_token?: string
-  expires_in?: number
+  authentication_code?: string;
+  access_token?: string;
+  expires_in?: number;
 }
 
 export interface ErrorType {
-  type?: string
-  message?: string
+  type?: string;
+  message?: string;
 }
 
 export const cleanUrlString = (state: string) => state.replace('#!', '');
@@ -35,13 +43,13 @@ export const cleanUrlString = (state: string) => state.replace('#!', '');
 export const getCodeAndStateFromUrl = pipe(
   querystring.extract,
   querystring.parse,
-  evolve({ state: cleanUrlString }),
+  evolve({state: cleanUrlString}),
 );
 
 export const getErrorFromUrl = pipe(
   querystring.extract,
   querystring.parse,
-  evolve({ error_description: cleanUrlString }),
+  evolve({error_description: cleanUrlString}),
 );
 
 export const transformError = applySpec<ErrorType>({
@@ -62,14 +70,12 @@ export const injectedJavaScript = `
   true;
 `;
 
-export const getAuthorizationUrl = (
-  {
-    authState,
-    clientID,
-    permissions,
-    redirectUri,
-  }: Partial<LinkedInModalPropTypes>
-) =>
+export const getAuthorizationUrl = ({
+  authState,
+  clientID,
+  permissions,
+  redirectUri,
+}: Partial<LinkedInModalPropTypes>) =>
   `${AUTHORIZATION_URL}?${querystring.stringify({
     response_type: 'code',
     client_id: clientID,
@@ -78,14 +84,12 @@ export const getAuthorizationUrl = (
     redirect_uri: redirectUri,
   })}`;
 
-export const getPayloadForToken = (
-  {
-    clientID,
-    clientSecret,
-    code,
-    redirectUri,
-  }: Partial<LinkedInModalPropTypes> & {code: string}
-) =>
+export const getPayloadForToken = ({
+  clientID,
+  clientSecret,
+  code,
+  redirectUri,
+}: Partial<LinkedInModalPropTypes> & {code: string}) =>
   querystring.stringify({
     grant_type: 'authorization_code',
     code,
@@ -101,7 +105,7 @@ export const fetchToken = async (payload: any) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: payload,
-  })
+  });
   return await response.json();
 };
 
@@ -124,9 +128,9 @@ export const onLoadStart = async (
       onError(transformError(err));
     }
   } else {
-    const { code, state } = getCodeAndStateFromUrl(url)
+    const {code, state} = getCodeAndStateFromUrl(url);
     if (!shouldGetAccessToken) {
-      onSuccess({ authentication_code: code as string })
+      onSuccess({authentication_code: code as string});
     } else if (state !== authState) {
       if (onError) {
         onError({
@@ -166,6 +170,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...closeSize,
   },
+  logoutContainer: {
+    width: 1,
+    height: 1,
+  },
 });
 
 export default forwardRef(function LinkedInModal(
@@ -191,16 +199,16 @@ export default forwardRef(function LinkedInModal(
     shouldGetAccessToken = true,
     isDisabled = false,
   }: LinkedInModalPropTypes,
-  ref: any,) : ReactElement {
-
+  ref: any,
+): ReactElement {
   const [raceCondition, setRaceCondition] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [currentAuthState, setCurrentAuthState] = useState<string>(uuidv4());
+  const [currentAuthState, setCurrentAuthState] = useState<string>(uuid());
   const [logout, setLogout] = useState<boolean>(false);
 
   useEffect(() => {
     if (modalVisible) {
-      const tmpAuthState = authState ?? uuidv4();
+      const tmpAuthState = authState ?? uuid();
       setRaceCondition(false);
       setCurrentAuthState(tmpAuthState);
     }
@@ -210,15 +218,15 @@ export default forwardRef(function LinkedInModal(
   // with whatever you return from the callback passed
   // as the second argument
   useImperativeHandle(ref, () => ({
-    open: async() => {
+    open: async () => {
       await _open();
     },
 
-    close: async() => {
+    close: async () => {
       await _close();
     },
 
-    logoutAsync: async() => {
+    logoutAsync: async () => {
       await _logoutAsync();
     },
   }));
@@ -241,7 +249,7 @@ export default forwardRef(function LinkedInModal(
         shouldGetAccessToken,
       );
     }
-  }
+  };
 
   const _getAccessToken = async (code: string) => {
     const payload: string = getPayloadForToken({
@@ -285,7 +293,7 @@ export default forwardRef(function LinkedInModal(
 
   const getButtonElement = (): ReactElement => {
     if (renderButton) {
-      return(
+      return (
         <TouchableOpacity
           accessibilityRole={'button'}
           accessibilityState={{disabled: isDisabled}}
@@ -302,8 +310,7 @@ export default forwardRef(function LinkedInModal(
         accessibilityState={{disabled: isDisabled}}
         onPress={_open}
         hitSlop={areaTouchText}
-        disabled={isDisabled}
-      >
+        disabled={isDisabled}>
         <Text>{linkText}</Text>
       </TouchableOpacity>
     );
@@ -318,7 +325,7 @@ export default forwardRef(function LinkedInModal(
         source={require('./assets/x-white.png')}
         resizeMode="contain"
         style={{
-          ...evolve({ width: add(-8), height: add(-8) }, closeSize),
+          ...evolve({width: add(-8), height: add(-8)}, closeSize),
         }}
       />
     );
@@ -330,10 +337,10 @@ export default forwardRef(function LinkedInModal(
     }
 
     const url = getAuthorizationUrl({
-      authState,
-      clientID,
-      permissions,
-      redirectUri,
+      authState: currentAuthState,
+      clientID: clientID,
+      permissions: permissions,
+      redirectUri: redirectUri,
     });
 
     return (
@@ -357,8 +364,7 @@ export default forwardRef(function LinkedInModal(
         animationType={animationType}
         transparent
         visible={modalVisible}
-        onRequestClose={_close}
-      >
+        onRequestClose={_close}>
         <View style={[styles.container, containerStyle]}>
           <View style={[styles.wrapper, wrapperStyle]}>
             {getWebviewElement()}
@@ -366,16 +372,15 @@ export default forwardRef(function LinkedInModal(
           <TouchableOpacity
             onPress={_close}
             style={[styles.close, closeStyle]}
-            accessibilityRole={'button'}
-          >
+            accessibilityRole={'button'}>
             {getCloseElement()}
           </TouchableOpacity>
         </View>
       </Modal>
       {logout && (
-        <View style={{width: 1, height: 1}}>
+        <View style={styles.logoutContainer}>
           <WebView
-            source={{ uri: LOGOUT_URL }}
+            source={{uri: LOGOUT_URL}}
             javaScriptEnabled
             domStorageEnabled
             sharedCookiesEnabled
@@ -400,10 +405,10 @@ export type LinkedInModalPropTypes = {
   onSignIn?: () => void;
   linkText?: string;
   areaTouchText?: {
-    top?: number,
-    bottom?: number,
-    left?: number,
-    right?: number
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
   };
   renderButton?: ReactElement;
   renderClose?: ReactElement;
@@ -413,4 +418,4 @@ export type LinkedInModalPropTypes = {
   animationType?: 'none' | 'fade' | 'slide';
   shouldGetAccessToken?: boolean;
   isDisabled?: boolean;
-}
+};
