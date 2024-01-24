@@ -1,4 +1,4 @@
-import 'react-native-get-random-values'
+import 'react-native-get-random-values';
 import React, {
   forwardRef,
   ReactElement,
@@ -19,7 +19,7 @@ import {
 import {WebView} from 'react-native-webview';
 import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
 import querystring from 'query-string';
-import {v4 as uuid} from 'uuid'
+import {v4 as uuid} from 'uuid';
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
@@ -169,6 +169,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     ...closeSize,
+  },
+  logoutContainer: {
+    width: 1,
+    height: 1,
   },
 });
 
@@ -374,7 +378,7 @@ export default forwardRef(function LinkedInModal(
         </View>
       </Modal>
       {logout && (
-        <View style={{width: 1, height: 1}}>
+        <View style={styles.logoutContainer}>
           <WebView
             source={{uri: LOGOUT_URL}}
             javaScriptEnabled
