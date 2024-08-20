@@ -212,7 +212,7 @@ export default forwardRef(function LinkedInModal(
       setRaceCondition(false);
       setCurrentAuthState(tmpAuthState);
     }
-  }, [modalVisible]);
+  }, [modalVisible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The component instance will be extended
   // with whatever you return from the callback passed

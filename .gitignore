@@ -62,17 +62,6 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# yarn
-.yarn/*
-# don't keep cache - it's recommended to keep it, but I think it's take too much place
-# keep it, just avoid to remake an yarn install
-#!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
 # Yarn Integrity file
 .yarn-integrity
 
@@ -92,3 +81,11 @@ config.ts
 
 # testing
 /coverage
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
