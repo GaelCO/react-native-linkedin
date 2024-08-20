@@ -2166,7 +2166,7 @@ __metadata:
     react: "npm:18.3.1"
     react-native: "npm:0.75.1"
     react-native-get-random-values: "npm:^1.11.0"
-    react-native-webview: "npm:13.10.5"
+    react-native-webview: "npm:13.10.4"
     react-test-renderer: "npm:18.3.1"
     typescript: "npm:~5.5.4"
   peerDependencies:
@@ -10234,16 +10234,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webview@npm:13.10.5":
-  version: 13.10.5
-  resolution: "react-native-webview@npm:13.10.5"
+"react-native-webview@npm:13.10.4":
+  version: 13.10.4
+  resolution: "react-native-webview@npm:13.10.4"
   dependencies:
     escape-string-regexp: "npm:2.0.0"
     invariant: "npm:2.2.4"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/a962bd068907a62e85847c067697a89b0951e08dd6ea73d3428d39ffa86acbffe7b7650b431aebab175281df7ff0d9c0355f796add5c363d84d680fc21f5488d
+  checksum: 10c0/5abaffa6323e07a51c9edfa09565646a5f604a9c14043591860b45a358ac4c96f3aa80dedcfa09cb033c0a2a26e4a06f51b55aa6cb8185c41468d3221a0478eb
   languageName: node
   linkType: hard
 
