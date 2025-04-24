@@ -91,6 +91,7 @@ export default function AppContainer(): ReactElement {
       setMessage(payload?.message);
       setRefreshing(false);
     } else {
+      // eslint-disable-next-line no-alert
       alert(`authentication_code = ${authentication_code}`);
     }
   };
