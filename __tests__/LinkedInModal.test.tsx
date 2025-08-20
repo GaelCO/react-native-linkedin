@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import renderer from 'react-test-renderer';
+import {render, screen} from '@testing-library/react-native';
 import LinkedInModal, {
   cleanUrlString,
   getCodeAndStateFromUrl,
@@ -16,7 +16,6 @@ import LinkedInModal, {
 
 // jest.mock('WebView', () => 'WebView')
 
-// @ts-ignore
 global.fetch = jest.fn().mockImplementation(
   () =>
     new Promise(resolve => {
@@ -30,9 +29,8 @@ global.fetch = jest.fn().mockImplementation(
     }),
 );
 
-it('<LinkedInModal /> render correctly', () => {
-  const tree = renderer
-    .create(
+test('<LinkedInModal /> render correctly', async () => {
+  render(
       <LinkedInModal
         onSuccess={() => {}}
         clientID="clientID"
@@ -40,13 +38,11 @@ it('<LinkedInModal /> render correctly', () => {
         redirectUri="https://xaviercarpentier.fr"
         authState="authState"
         areaTouchText={{bottom: 10, left: 10, right: 10, top: 10}}
-      />,
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+      />);
+  expect(screen).toMatchSnapshot();
 });
 
-it('cleanUrlString', () => {
+test('cleanUrlString', () => {
   expect(cleanUrlString('https://xaviercarpentier.com#!')).toBe(
     'https://xaviercarpentier.com',
   );
@@ -55,13 +51,13 @@ it('cleanUrlString', () => {
   );
 });
 
-it('getCodeAndStateFromUrl', () => {
+test('getCodeAndStateFromUrl', () => {
   expect(
     getCodeAndStateFromUrl('https://xaviercarpentier.com?code=code&state=1234'),
   ).toMatchObject({code: 'code', state: '1234'});
 });
 
-it('isErrorUrl', () => {
+test('isErrorUrl', () => {
   expect(
     isErrorUrl(
       'https://xaviercarpentier.com?error=error&error_description=error_description',
@@ -69,7 +65,7 @@ it('isErrorUrl', () => {
   ).toBe(true);
 });
 
-it('getErrorFromUrl', () => {
+test('getErrorFromUrl', () => {
   expect(
     getErrorFromUrl(
       'https://xaviercarpentier.com?error=error&error_description=error_description',
@@ -77,7 +73,7 @@ it('getErrorFromUrl', () => {
   ).toMatchObject({error: 'error', error_description: 'error_description'});
 });
 
-it('transformError', () => {
+test('transformError', () => {
   expect(
     transformError({
       error: 'error',
@@ -89,7 +85,7 @@ it('transformError', () => {
   });
 });
 
-it('getAuthorizationUrl', () => {
+test('getAuthorizationUrl', () => {
   expect(
     getAuthorizationUrl({
       authState: 'authState',
@@ -105,7 +101,7 @@ it('getAuthorizationUrl', () => {
   );
 });
 
-it('getPayloadForToken', () => {
+test('getPayloadForToken', () => {
   expect(
     getPayloadForToken({
       clientID: 'clientID',
@@ -120,7 +116,7 @@ it('getPayloadForToken', () => {
   );
 });
 
-it('fetchToken', async () => {
+test('fetchToken', async () => {
   const token = await fetchToken('payload');
   expect(token).toMatchObject({
     access_token: 'access_token',
@@ -128,13 +124,13 @@ it('fetchToken', async () => {
   });
 });
 
-it('logError', async () => {
+test('logError', () => {
   logError({type: 'test_error', message: 'test error'});
 });
 
-it('onLoadStart error', async () => {
+test('onLoadStart error', async () => {
   await onLoadStart(
-    'http://url.com?error=error',
+    'https://url.com?error=error',
     '',
     () => {},
     (error: any) => expect(error).toEqual({type: 'error', message: ''}),
@@ -143,9 +139,9 @@ it('onLoadStart error', async () => {
   );
 });
 
-it('onLoadStart success', async () => {
+test('onLoadStart success', async () => {
   await onLoadStart(
-    'http://url.com?access_token=access_token&expires_in=123',
+    'https://url.com?access_token=access_token&expires_in=123',
     '',
     success =>
       expect(success).toEqual({
@@ -159,9 +155,9 @@ it('onLoadStart success', async () => {
   );
 });
 
-it('onLoadStart error code & state', async () => {
+test('onLoadStart error code & state', async () => {
   await onLoadStart(
-    'http://url.com?access_token=access_token&expires_in=123&state=123',
+    'https://url.com?access_token=access_token&expires_in=123&state=123',
     '456',
     () => {},
     error =>
