@@ -67,7 +67,7 @@ export default function AppContainer(): ReactElement {
   const [localizedFirstName, setLocalizedFirstName] = useState<string>();
   const [, setMessage] = useState<string | undefined>();
 
-  const modal = useRef<any>();
+  const modal = useRef<any>(null);
 
   useEffect(() => {
     StatusBar.setHidden(true);
