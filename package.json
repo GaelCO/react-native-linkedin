@@ -1,6 +1,6 @@
 {
   "name": "@gcou/react-native-linkedin",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "main": "lib/index.tsx",
   "description": "React-Native LinkedIn, a simple LinkedIn login library for React-Native with WebView and Modal - compatibility with RN 0.73",
   "repository": {
