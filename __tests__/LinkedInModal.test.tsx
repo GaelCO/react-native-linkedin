@@ -31,14 +31,15 @@ global.fetch = jest.fn().mockImplementation(
 
 test('<LinkedInModal /> render correctly', async () => {
   render(
-      <LinkedInModal
-        onSuccess={() => {}}
-        clientID="clientID"
-        clientSecret="clientSecret"
-        redirectUri="https://xaviercarpentier.fr"
-        authState="authState"
-        areaTouchText={{bottom: 10, left: 10, right: 10, top: 10}}
-      />);
+    <LinkedInModal
+      onSuccess={() => {}}
+      clientID="clientID"
+      clientSecret="clientSecret"
+      redirectUri="https://xaviercarpentier.fr"
+      authState="authState"
+      areaTouchText={{bottom: 10, left: 10, right: 10, top: 10}}
+    />,
+  );
   expect(screen).toMatchSnapshot();
 });
 
