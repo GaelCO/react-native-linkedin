@@ -1,8 +1,7 @@
 {
-  "include": [
-    "src"
-  ],
   "extends": "expo/tsconfig.base",
+  "include": ["src", "**/*.ts", "**/*.tsx"],
+  "exclude": ["**/node_modules", "**/Pods"],
   /* Recommended React Native TSConfig base */
   "compilerOptions": {
     "declaration": true,
@@ -42,7 +41,4 @@
       "./@types"
     ],
   },
-  "exclude": [
-    "node_modules",
-  ],
 }
