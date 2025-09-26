@@ -1,6 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
-  "include": ["src", "**/*.ts", "**/*.tsx"],
+  "include": ["src"],
   "exclude": ["**/node_modules", "**/Pods"],
   /* Recommended React Native TSConfig base */
   "compilerOptions": {

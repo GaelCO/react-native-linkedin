@@ -1,6 +1,6 @@
 {
   "name": "@gcou/react-native-linkedin",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "main": "lib/index.tsx",
   "description": "React-Native LinkedIn, a simple LinkedIn login library for React-Native with WebView and Modal - compatibility with RN 0.73",
   "repository": {
@@ -49,7 +49,7 @@
     "@types/ramda": "^0.31.1",
     "@types/react": "~19.1.13",
     "@types/react-test-renderer": "^19.1.0",
-    "@types/uuid": "^11.0.0",
+    "@types/uuid": "^10.0.0",
     "babel-preset-expo": "^54.0.3",
     "eslint": "^8.57.1",
     "eslint-plugin-ft-flow": "^3.0.11",
