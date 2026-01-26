@@ -1,7 +1,8 @@
 import 'react-native';
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import LinkedInModal, {
+import LinkedInModal, { logError, onLoadStart } from '../src/LinkedInModal';
+import {
   cleanUrlString,
   getCodeAndStateFromUrl,
   getErrorFromUrl,
@@ -10,9 +11,7 @@ import LinkedInModal, {
   getAuthorizationUrl,
   getPayloadForToken,
   fetchToken,
-  logError,
-  onLoadStart,
-} from '../src';
+} from '../src/oauth';
 
 // jest.mock('WebView', () => 'WebView')
 
