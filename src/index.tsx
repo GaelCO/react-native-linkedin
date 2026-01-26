@@ -39,6 +39,12 @@ export interface ErrorType {
   message?: string;
 }
 
+export interface LinkedInModalRef {
+  open: () => void;
+  close: () => void;
+  logoutAsync: () => Promise<void>;
+}
+
 export const cleanUrlString = (state: string) => state.replace('#!', '');
 
 export const getCodeAndStateFromUrl = pipe(
@@ -427,9 +433,3 @@ export type LinkedInModalPropTypes = {
   shouldGetAccessToken?: boolean;
   isDisabled?: boolean;
 };
-
-export interface LinkedInModalRef {
-  open: () => void;
-  close: () => void;
-  logoutAsync: () => Promise<void>;
-}
