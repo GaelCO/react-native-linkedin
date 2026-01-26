@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useRef, useState} from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,9 +8,9 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {CLIENT_ID, CLIENT_SECRET, REDIRECT_URL} from './config';
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from './config';
 
-import LinkedInModal, {LinkedInToken} from './src/';
+import LinkedInModal, { LinkedInToken } from './src/';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +74,7 @@ export default function AppContainer(): ReactElement {
   }, []);
 
   const getUser = async (data: LinkedInToken) => {
-    const {access_token, authentication_code} = data;
+    const { access_token, authentication_code } = data;
     if (!authentication_code) {
       setRefreshing(true);
 

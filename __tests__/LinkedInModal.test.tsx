@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import {render, screen} from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 import LinkedInModal, {
   cleanUrlString,
   getCodeAndStateFromUrl,
@@ -37,7 +37,7 @@ test('<LinkedInModal /> render correctly', async () => {
       clientSecret="clientSecret"
       redirectUri="https://xaviercarpentier.fr"
       authState="authState"
-      areaTouchText={{bottom: 10, left: 10, right: 10, top: 10}}
+      areaTouchText={{ bottom: 10, left: 10, right: 10, top: 10 }}
     />,
   );
   expect(screen).toMatchSnapshot();
@@ -55,7 +55,7 @@ test('cleanUrlString', () => {
 test('getCodeAndStateFromUrl', () => {
   expect(
     getCodeAndStateFromUrl('https://xaviercarpentier.com?code=code&state=1234'),
-  ).toMatchObject({code: 'code', state: '1234'});
+  ).toMatchObject({ code: 'code', state: '1234' });
 });
 
 test('isErrorUrl', () => {
@@ -71,7 +71,7 @@ test('getErrorFromUrl', () => {
     getErrorFromUrl(
       'https://xaviercarpentier.com?error=error&error_description=error_description',
     ),
-  ).toMatchObject({error: 'error', error_description: 'error_description'});
+  ).toMatchObject({ error: 'error', error_description: 'error_description' });
 });
 
 test('transformError', () => {
@@ -126,7 +126,7 @@ test('fetchToken', async () => {
 });
 
 test('logError', () => {
-  logError({type: 'test_error', message: 'test error'});
+  logError({ type: 'test_error', message: 'test error' });
 });
 
 test('onLoadStart error', async () => {
@@ -134,7 +134,7 @@ test('onLoadStart error', async () => {
     'https://url.com?error=error',
     '',
     () => {},
-    (error: any) => expect(error).toEqual({type: 'error', message: ''}),
+    (error: any) => expect(error).toEqual({ type: 'error', message: '' }),
     () => {},
     () => new Promise(resolve => resolve({})),
   );

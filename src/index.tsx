@@ -16,10 +16,10 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
-import {pipe, evolve, propSatisfies, applySpec, propOr, add} from 'ramda';
+import { WebView } from 'react-native-webview';
+import { pipe, evolve, propSatisfies, applySpec, propOr, add } from 'ramda';
 import querystring from 'query-string';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
@@ -43,13 +43,13 @@ export const cleanUrlString = (state: string) => state.replace('#!', '');
 export const getCodeAndStateFromUrl = pipe(
   querystring.extract,
   querystring.parse,
-  evolve({state: cleanUrlString}),
+  evolve({ state: cleanUrlString }),
 );
 
 export const getErrorFromUrl = pipe(
   querystring.extract,
   querystring.parse,
-  evolve({error_description: cleanUrlString}),
+  evolve({ error_description: cleanUrlString }),
 );
 
 export const transformError = applySpec<ErrorType>({
@@ -89,7 +89,7 @@ export const getPayloadForToken = ({
   clientSecret,
   code,
   redirectUri,
-}: Partial<LinkedInModalPropTypes> & {code: string}) =>
+}: Partial<LinkedInModalPropTypes> & { code: string }) =>
   querystring.stringify({
     grant_type: 'authorization_code',
     code,
@@ -128,9 +128,9 @@ export const onLoadStart = async (
       onError(transformError(err));
     }
   } else {
-    const {code, state} = getCodeAndStateFromUrl(url);
+    const { code, state } = getCodeAndStateFromUrl(url);
     if (!shouldGetAccessToken) {
-      onSuccess({authentication_code: code as string});
+      onSuccess({ authentication_code: code as string });
     } else if (state !== authState) {
       if (onError) {
         onError({
@@ -144,7 +144,7 @@ export const onLoadStart = async (
     }
   }
 };
-const closeSize = {width: 24, height: 24};
+const closeSize = { width: 24, height: 24 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -189,7 +189,7 @@ export default forwardRef(function LinkedInModal(
     onClose,
     onSignIn,
     linkText = 'Login with LinkedIn',
-    areaTouchText = {top: 20, bottom: 20, left: 50, right: 50},
+    areaTouchText = { top: 20, bottom: 20, left: 50, right: 50 },
     renderButton,
     renderClose,
     containerStyle = StyleSheet.create({}),
@@ -231,7 +231,7 @@ export default forwardRef(function LinkedInModal(
     },
   }));
 
-  const onNavigationStateChange = async ({url}: any) => {
+  const onNavigationStateChange = async ({ url }: any) => {
     if (url.includes(redirectUri) && !raceCondition) {
       setModalVisible(false);
       setRaceCondition(true);
@@ -296,10 +296,11 @@ export default forwardRef(function LinkedInModal(
       return (
         <TouchableOpacity
           accessibilityRole={'button'}
-          accessibilityState={{disabled: isDisabled}}
+          accessibilityState={{ disabled: isDisabled }}
           onPress={_open}
           hitSlop={areaTouchText}
-          disabled={isDisabled}>
+          disabled={isDisabled}
+        >
           {renderButton}
         </TouchableOpacity>
       );
@@ -307,10 +308,11 @@ export default forwardRef(function LinkedInModal(
     return (
       <TouchableOpacity
         accessibilityRole={'button'}
-        accessibilityState={{disabled: isDisabled}}
+        accessibilityState={{ disabled: isDisabled }}
         onPress={_open}
         hitSlop={areaTouchText}
-        disabled={isDisabled}>
+        disabled={isDisabled}
+      >
         <Text>{linkText}</Text>
       </TouchableOpacity>
     );
@@ -325,7 +327,7 @@ export default forwardRef(function LinkedInModal(
         source={require('./assets/x-white.png')}
         resizeMode="contain"
         style={{
-          ...evolve({width: add(-8), height: add(-8)}, closeSize),
+          ...evolve({ width: add(-8), height: add(-8) }, closeSize),
         }}
       />
     );
@@ -345,7 +347,7 @@ export default forwardRef(function LinkedInModal(
 
     return (
       <WebView
-        source={url ? {uri: url} : undefined}
+        source={url ? { uri: url } : undefined}
         onNavigationStateChange={onNavigationStateChange}
         startInLoadingState={true}
         javaScriptEnabled={true}
@@ -364,7 +366,8 @@ export default forwardRef(function LinkedInModal(
         animationType={animationType}
         transparent
         visible={modalVisible}
-        onRequestClose={_close}>
+        onRequestClose={_close}
+      >
         <View style={[styles.container, containerStyle]}>
           <View style={[styles.wrapper, wrapperStyle]}>
             {getWebviewElement()}
@@ -372,7 +375,8 @@ export default forwardRef(function LinkedInModal(
           <TouchableOpacity
             onPress={_close}
             style={[styles.close, closeStyle]}
-            accessibilityRole={'button'}>
+            accessibilityRole={'button'}
+          >
             {getCloseElement()}
           </TouchableOpacity>
         </View>
@@ -380,7 +384,7 @@ export default forwardRef(function LinkedInModal(
       {logout && (
         <View style={styles.logoutContainer}>
           <WebView
-            source={{uri: LOGOUT_URL}}
+            source={{ uri: LOGOUT_URL }}
             javaScriptEnabled
             domStorageEnabled
             sharedCookiesEnabled
