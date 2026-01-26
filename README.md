@@ -9,11 +9,9 @@
 Simple <strong>LinkedIn</strong> login library for <strong>React-Native</strong> with <i>WebView</i> into a <i>Modal</i>
 </p>
 <p align="center">
-  <a href="#hire-an-expert"><img src="https://img.shields.io/badge/%F0%9F%92%AA-hire%20an%20expert-brightgreen"/></a>
-  <a href="https://reactnative.gallery/xcarpentier/linkedin-connect"><img src="https://img.shields.io/badge/reactnative.gallery-%F0%9F%8E%AC-green.svg"></a>
   <a href="https://www.npmjs.com/package/react-native-linkedin"><img src="https://badge.fury.io/js/react-native-linkedin.svg"></a>
   <a href="https://www.npmjs.com/package/react-native-linkedin"><img src="https://img.shields.io/npm/dm/react-native-linkedin.svg?style=flat-square"></a>
-  <a href="https://travis-ci.org/xcarpentier/react-native-linkedin"><img src="https://travis-ci.org/xcarpentier/react-native-linkedin.svg?branch=master"></a>
+  <a href="https://travis-ci.org/GaelCO/react-native-linkedin"><img src="https://api.travis-ci.com/GaelCO/react-native-linkedin.svg?branch=main"></a>
 </p>
 
 <br />
@@ -43,7 +41,6 @@ Please note that you should give your linkedin client id but not your secret key
 You should be aware that key can be found if you store it directly to your code.
 **I strongly recommend to not declare client secret key on your code but found a way to keep it secret**
 
-- [> Related issue](https://github.com/xcarpentier/react-native-linkedin/issues/59)
 - [> LinkedIn Documentation](https://docs.microsoft.com/en-us/linkedin/shared/api-guide/best-practices/secure-applications?context=linkedin/context#api-key-and-secret-key)
 
 ```tsx
@@ -52,7 +49,7 @@ You should be aware that key can be found if you store it directly to your code.
     clientSecret={null}
     clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
     redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
-    onSuccess={{ authentication_code } => console.log(`Post this ${authentication_code} to your server.`)}
+    onSuccess={({ authentication_code }) => console.log(`Post this ${authentication_code} to your server.`)}
   />
 ```
 
@@ -64,6 +61,7 @@ import React, {ReactElement, useRef} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import LinkedInModal from 'react-native-linkedin';
+import LinkedInModalRef from 'react-native-linkedin';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
 })
 
 export default function AppContainer() : ReactElement {
-  linkedRef = useRef<any>();
+  linkedRef = useRef<LinkedInModalRef>(null);
   
   return (
     <View style={styles.container}>
@@ -142,20 +140,11 @@ export default function AppContainer() : ReactElement {
 </View>
 ```
 
-
-## Other questions
-
-Feel free to [contact me](mailto:xcapetir@gmail.com) or [create an issue](https://github.com/xcarpentier/react-native-linkedin/issues/new)
-
 ## Alternatives
 
 - [react-native-linkedin-login](https://www.npmjs.com/package/react-native-linkedin-login)
 - [react-native-linkedin-sdk](https://www.npmjs.com/package/react-native-linkedin-sdk)
 - [react-native-linkedin-oauth](https://www.npmjs.com/package/react-native-linkedin-oauth)
-
-## Hire an expert!
-
-Looking for a ReactNative freelance expert with more than 12 years of experience? Contact me from my [website](https://xaviercarpentier.com)!
 
 ## Licence
 
