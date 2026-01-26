@@ -1,5 +1,6 @@
 import 'react-native-get-random-values';
 import React, {
+  ForwardedRef,
   forwardRef,
   ReactElement,
   useEffect,
@@ -79,7 +80,7 @@ export const getAuthorizationUrl = ({
   `${AUTHORIZATION_URL}?${querystring.stringify({
     response_type: 'code',
     client_id: clientID,
-    scope: permissions!.join(' ').trim(),
+    scope: (permissions ?? []).join(' ').trim(),
     state: authState,
     redirect_uri: redirectUri,
   })}`;
@@ -199,7 +200,7 @@ export default forwardRef(function LinkedInModal(
     shouldGetAccessToken = true,
     isDisabled = false,
   }: LinkedInModalPropTypes,
-  ref: any,
+  ref: ForwardedRef<LinkedInModalRef>,
 ): ReactElement {
   const [raceCondition, setRaceCondition] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -217,19 +218,22 @@ export default forwardRef(function LinkedInModal(
   // The component instance will be extended
   // with whatever you return from the callback passed
   // as the second argument
-  useImperativeHandle(ref, () => ({
-    open: async () => {
-      await _open();
-    },
+  useImperativeHandle(
+    ref,
+    (): LinkedInModalRef => ({
+      open: async () => {
+        _open();
+      },
 
-    close: async () => {
-      await _close();
-    },
+      close: async () => {
+        _close();
+      },
 
-    logoutAsync: async () => {
-      await _logoutAsync();
-    },
-  }));
+      logoutAsync: async () => {
+        await _logoutAsync();
+      },
+    }),
+  );
 
   const onNavigationStateChange = async ({ url }: any) => {
     if (url.includes(redirectUri) && !raceCondition) {
@@ -282,7 +286,7 @@ export default forwardRef(function LinkedInModal(
     setModalVisible(true);
   };
 
-  const _logoutAsync = () =>
+  const _logoutAsync = async () =>
     new Promise<void>(resolve => {
       setLogout(true);
       setTimeout(() => {
@@ -423,3 +427,9 @@ export type LinkedInModalPropTypes = {
   shouldGetAccessToken?: boolean;
   isDisabled?: boolean;
 };
+
+export interface LinkedInModalRef {
+  open: () => void;
+  close: () => void;
+  logoutAsync: () => Promise<void>;
+}
