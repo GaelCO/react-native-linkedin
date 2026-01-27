@@ -34,23 +34,44 @@ test('onLoadStart error', async () => {
 
 test('onLoadStart success', async () => {
   await onLoadStart(
-    'https://url.com?access_token=access_token&expires_in=123',
-    '',
+    'https://url.com?access_token=access_token&expires_in=123&code=code&state=123',
+    '123',
     success =>
       expect(success).toEqual({
         access_token: 'access_token',
-        expires_in: '123',
+        expires_in: 123,
       }),
     () => {},
     () => {},
-    () => new Promise(resolve => resolve({})),
+    () =>
+      new Promise(resolve =>
+        resolve({
+          access_token: 'access_token',
+          expires_in: 123,
+        }),
+      ),
     true,
   );
 });
 
-test('onLoadStart error code & state', async () => {
+test('onLoadStart error code', async () => {
   await onLoadStart(
-    'https://url.com?access_token=access_token&expires_in=123&state=123',
+    'https://url.com?access_token=access_token&expires_in=123',
+    '',
+    () => {},
+    error =>
+      expect(error).toEqual({
+        type: 'missing_code',
+        message: 'Authorization code missing from redirect URL',
+      }),
+    () => {},
+    () => new Promise(resolve => resolve({})),
+  );
+});
+
+test('onLoadStart error state', async () => {
+  await onLoadStart(
+    'https://url.com?access_token=access_token&expires_in=123&code=code&state=123',
     '456',
     () => {},
     error =>

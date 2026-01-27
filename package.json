@@ -30,7 +30,6 @@
   ],
   "dependencies": {
     "query-string": "9.3.1",
-    "ramda": "0.32.0",
     "react-native-get-random-values": "^2.0.0"
   },
   "devDependencies": {
@@ -46,7 +45,6 @@
     "@react-native/typescript-config": "0.81.5",
     "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^29.5.14",
-    "@types/ramda": "^0.31.1",
     "@types/react": "~19.1.17",
     "@types/react-test-renderer": "^19.1.0",
     "@types/uuid": "^10.0.0",

@@ -18,7 +18,6 @@ import {
   ViewStyle,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { evolve, add } from 'ramda';
 import { v4 as uuid } from 'uuid';
 import { ErrorType, LinkedInToken } from './types';
 import {
@@ -42,7 +41,7 @@ export interface LinkedInModalRef {
 
 export const injectedJavaScript = `
   setTimeout(function() {
-    document.querySelector("input[type=text]").setAttribute("autocapitalize", "off");
+    document.querySelector("input[type=text]")?.setAttribute("autocapitalize", "off");
   }, 1);
   true;
 `;
@@ -100,18 +99,28 @@ export const onLoadStart = async (
     }
   } else {
     const { code, state } = getCodeAndStateFromUrl(url);
-    if (!shouldGetAccessToken) {
-      onSuccess({ authentication_code: code as string });
-    } else if (state !== authState) {
+
+    if (!code) {
       if (onError) {
         onError({
-          type: 'state_not_match',
-          message: `state is not the same ${state}`,
+          type: 'missing_code',
+          message: 'Authorization code missing from redirect URL',
         });
       }
     } else {
-      const token: LinkedInToken = await getAccessToken(code as string);
-      onSuccess(token);
+      if (!shouldGetAccessToken) {
+        onSuccess({ authentication_code: code });
+      } else if (state !== authState) {
+        if (onError) {
+          onError({
+            type: 'state_not_match',
+            message: `state is not the same ${state}`,
+          });
+        }
+      } else {
+        const token = await getAccessToken(code);
+        onSuccess(token);
+      }
     }
   }
 };
@@ -234,77 +243,18 @@ export default forwardRef(function LinkedInModal(
       }, 3000);
     });
 
-  const getButtonElement = (): ReactElement => {
-    if (renderButton) {
-      return (
-        <TouchableOpacity
-          accessibilityRole={'button'}
-          accessibilityState={{ disabled: isDisabled }}
-          onPress={_open}
-          hitSlop={areaTouchText}
-          disabled={isDisabled}
-        >
-          {renderButton}
-        </TouchableOpacity>
-      );
-    }
-    return (
+  return (
+    <View>
       <TouchableOpacity
-        accessibilityRole={'button'}
+        accessibilityRole="button"
         accessibilityState={{ disabled: isDisabled }}
         onPress={_open}
         hitSlop={areaTouchText}
         disabled={isDisabled}
       >
-        <Text>{linkText}</Text>
+        {renderButton ?? <Text>{linkText}</Text>}
       </TouchableOpacity>
-    );
-  };
 
-  const getCloseElement = (): ReactElement => {
-    if (renderClose) {
-      return renderClose;
-    }
-    return (
-      <Image
-        source={require('./assets/x-white.png')}
-        resizeMode="contain"
-        style={{
-          ...evolve({ width: add(-8), height: add(-8) }, closeSize),
-        }}
-      />
-    );
-  };
-
-  const getWebviewElement = () => {
-    if (!modalVisible) {
-      return null;
-    }
-
-    const url = getAuthorizationUrl({
-      authState: currentAuthState,
-      clientID: clientID,
-      permissions: permissions,
-      redirectUri: redirectUri,
-    });
-
-    return (
-      <WebView
-        source={url ? { uri: url } : undefined}
-        onNavigationStateChange={onNavigationStateChange}
-        startInLoadingState={true}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        injectedJavaScript={injectedJavaScript}
-        sharedCookiesEnabled={true}
-        incognito={true}
-      />
-    );
-  };
-
-  return (
-    <View>
-      {getButtonElement()}
       <Modal
         animationType={animationType}
         transparent
@@ -313,14 +263,39 @@ export default forwardRef(function LinkedInModal(
       >
         <View style={[styles.container, containerStyle]}>
           <View style={[styles.wrapper, wrapperStyle]}>
-            {getWebviewElement()}
+            <WebView
+              source={{
+                uri: getAuthorizationUrl({
+                  authState: currentAuthState,
+                  clientID: clientID,
+                  permissions: permissions,
+                  redirectUri: redirectUri,
+                }),
+              }}
+              onNavigationStateChange={onNavigationStateChange}
+              startInLoadingState={true}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              injectedJavaScript={injectedJavaScript}
+              sharedCookiesEnabled={true}
+              incognito={true}
+            />
           </View>
           <TouchableOpacity
             onPress={_close}
             style={[styles.close, closeStyle]}
             accessibilityRole={'button'}
           >
-            {getCloseElement()}
+            {renderClose ?? (
+              <Image
+                source={require('./assets/x-white.png')}
+                resizeMode="contain"
+                style={{
+                  width: closeSize.width - 8,
+                  height: closeSize.height - 8,
+                }}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </Modal>

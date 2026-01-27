@@ -1,11 +1,9 @@
 import querystring from 'query-string';
 import { LinkedInTokenResponse } from './types';
 
-const AUTHORIZATION_URL: string =
-  'https://www.linkedin.com/oauth/v2/authorization';
-const ACCESS_TOKEN_URL: string =
-  'https://www.linkedin.com/oauth/v2/accessToken';
-export const LOGOUT_URL: string = 'https://www.linkedin.com/m/logout';
+const AUTHORIZATION_URL = 'https://www.linkedin.com/oauth/v2/authorization';
+const ACCESS_TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken';
+export const LOGOUT_URL = 'https://www.linkedin.com/m/logout';
 
 // ==============================
 // URL & Payload builders

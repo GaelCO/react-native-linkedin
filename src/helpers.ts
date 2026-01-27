@@ -10,9 +10,8 @@ export const getCodeAndStateFromUrl = (
   state?: string;
 } => {
   const parsed = querystring.parse(querystring.extract(url) ?? '');
-  const state = parsed.state
-    ? cleanUrlString(parsed.state as string)
-    : undefined;
+  const state =
+    typeof parsed.state === 'string' ? cleanUrlString(parsed.state) : undefined;
 
   return {
     ...parsed,
@@ -29,9 +28,10 @@ export const getErrorFromUrl = (
   const parsed = querystring.parse(querystring.extract(url) ?? '');
   return {
     ...parsed,
-    error_description: parsed.error_description
-      ? cleanUrlString(parsed.error_description as string)
-      : undefined,
+    error_description:
+      typeof parsed.error_description === 'string'
+        ? cleanUrlString(parsed.error_description)
+        : undefined,
   };
 };
 
