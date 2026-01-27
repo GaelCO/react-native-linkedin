@@ -20,17 +20,18 @@ import {
 import { WebView } from 'react-native-webview';
 import { evolve, add } from 'ramda';
 import { v4 as uuid } from 'uuid';
+import { ErrorType, LinkedInToken } from './types';
 import {
-  ErrorType,
-  fetchToken,
-  getAuthorizationUrl,
   getCodeAndStateFromUrl,
   getErrorFromUrl,
-  getPayloadForToken,
   isErrorUrl,
-  LinkedInToken,
-  LOGOUT_URL,
   transformError,
+} from './helpers';
+import {
+  fetchToken,
+  getAuthorizationUrl,
+  getPayloadForToken,
+  LOGOUT_URL,
 } from './oauth';
 
 export interface LinkedInModalRef {

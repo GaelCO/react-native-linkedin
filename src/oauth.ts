@@ -1,65 +1,11 @@
 import querystring from 'query-string';
-import { evolve, pipe, propSatisfies } from 'ramda';
+import { LinkedInTokenResponse } from './types';
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
 const ACCESS_TOKEN_URL: string =
   'https://www.linkedin.com/oauth/v2/accessToken';
 export const LOGOUT_URL: string = 'https://www.linkedin.com/m/logout';
-
-// ==============================
-// Types
-// ==============================
-
-export interface LinkedInToken {
-  authentication_code?: string;
-  access_token?: string;
-  expires_in?: number;
-}
-
-interface LinkedInTokenResponse extends LinkedInToken {
-  error?: string;
-  error_description?: string;
-}
-
-export interface ErrorType {
-  type?: string;
-  message?: string;
-}
-
-// ==============================
-// Helpers
-// ==============================
-
-export const cleanUrlString = (state: string) => state.replace('#!', '');
-
-export const getCodeAndStateFromUrl = pipe(
-  querystring.extract,
-  querystring.parse,
-  evolve({ state: cleanUrlString }),
-);
-
-export const getErrorFromUrl = pipe(
-  querystring.extract,
-  querystring.parse,
-  evolve({ error_description: cleanUrlString }),
-);
-
-export function transformError(input: {
-  error?: string;
-  error_description?: string;
-}): ErrorType {
-  return {
-    type: input.error ?? '',
-    message: input.error_description ?? '',
-  };
-}
-
-export const isErrorUrl = pipe(
-  querystring.extract,
-  querystring.parse,
-  propSatisfies(error => typeof error !== 'undefined', 'error'),
-);
 
 // ==============================
 // URL & Payload builders
