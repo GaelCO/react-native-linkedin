@@ -1,6 +1,5 @@
 import querystring from 'query-string';
 import { applySpec, evolve, pipe, propOr, propSatisfies } from 'ramda';
-import { LinkedInModalPropTypes } from './LinkedInModal';
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
@@ -61,7 +60,12 @@ export const getAuthorizationUrl = ({
   clientID,
   permissions,
   redirectUri,
-}: Partial<LinkedInModalPropTypes>) =>
+}: {
+  authState?: string;
+  clientID: string;
+  permissions?: string[];
+  redirectUri: string;
+}) =>
   `${AUTHORIZATION_URL}?${querystring.stringify({
     response_type: 'code',
     client_id: clientID,
@@ -75,7 +79,12 @@ export const getPayloadForToken = ({
   clientSecret,
   code,
   redirectUri,
-}: Partial<LinkedInModalPropTypes> & { code: string }) =>
+}: {
+  clientID: string;
+  clientSecret?: string;
+  code: string;
+  redirectUri: string;
+}) =>
   querystring.stringify({
     grant_type: 'authorization_code',
     code,
