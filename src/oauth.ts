@@ -1,5 +1,5 @@
 import querystring from 'query-string';
-import { applySpec, evolve, pipe, propOr, propSatisfies } from 'ramda';
+import { evolve, pipe, propSatisfies } from 'ramda';
 
 const AUTHORIZATION_URL: string =
   'https://www.linkedin.com/oauth/v2/authorization';
@@ -15,6 +15,11 @@ export interface LinkedInToken {
   authentication_code?: string;
   access_token?: string;
   expires_in?: number;
+}
+
+interface LinkedInTokenResponse extends LinkedInToken {
+  error?: string;
+  error_description?: string;
 }
 
 export interface ErrorType {
@@ -40,15 +45,20 @@ export const getErrorFromUrl = pipe(
   evolve({ error_description: cleanUrlString }),
 );
 
-export const transformError = applySpec<ErrorType>({
-  type: propOr('', 'error'),
-  message: propOr('', 'error_description'),
-});
+export function transformError(input: {
+  error?: string;
+  error_description?: string;
+}): ErrorType {
+  return {
+    type: input.error ?? '',
+    message: input.error_description ?? '',
+  };
+}
 
 export const isErrorUrl = pipe(
   querystring.extract,
   querystring.parse,
-  propSatisfies((error: any) => typeof error !== 'undefined', 'error'),
+  propSatisfies(error => typeof error !== 'undefined', 'error'),
 );
 
 // ==============================
@@ -97,7 +107,9 @@ export const getPayloadForToken = ({
 // Fetch token
 // ==============================
 
-export const fetchToken = async (payload: any) => {
+export const fetchToken = async (
+  payload: string,
+): Promise<LinkedInTokenResponse> => {
   const response = await fetch(ACCESS_TOKEN_URL, {
     method: 'POST',
     headers: {

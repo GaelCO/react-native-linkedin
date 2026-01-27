@@ -87,7 +87,7 @@ export const onLoadStart = async (
   authState: string,
   onSuccess: LinkedInModalPropTypes['onSuccess'],
   onError: LinkedInModalPropTypes['onError'],
-  close: any,
+  close: () => void,
   getAccessToken: (token: string) => Promise<LinkedInToken>,
   shouldGetAccessToken?: boolean,
 ) => {
@@ -173,7 +173,7 @@ export default forwardRef(function LinkedInModal(
     }),
   );
 
-  const onNavigationStateChange = async ({ url }: any) => {
+  const onNavigationStateChange = async ({ url }: { url: string }) => {
     if (url.includes(redirectUri) && !raceCondition) {
       setModalVisible(false);
       setRaceCondition(true);
@@ -194,7 +194,7 @@ export default forwardRef(function LinkedInModal(
   };
 
   const _getAccessToken = async (code: string) => {
-    const payload: string = getPayloadForToken({
+    const payload = getPayloadForToken({
       clientID,
       clientSecret,
       code,
