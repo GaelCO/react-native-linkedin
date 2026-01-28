@@ -57,11 +57,10 @@ You should be aware that key can be found if you store it directly to your code.
 
 ```JavaScript
 // See ./App.tsx file for details
-import React, {ReactElement, useRef} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { ReactElement, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import LinkedInModal from 'react-native-linkedin';
-import LinkedInModalRef from 'react-native-linkedin';
+import LinkedInModal, { LinkedInModalRef } from 'react-native-linkedin';
 
 const styles = StyleSheet.create({
   container: {
@@ -78,7 +77,7 @@ export default function AppContainer() : ReactElement {
   return (
     <View style={styles.container}>
       <LinkedInModal
-        ref={this.linkedRef}
+        ref={linkedRef}
         clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
         clientSecret="[ Your client secret from https://www.linkedin.com/developer/apps ]"
         redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
