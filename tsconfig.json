@@ -32,13 +32,8 @@
     "resolveJsonModule": true,
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./@types"
-    ],
+    "lib": ["dom", "esnext"],
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "types": ["jest"]
   },
 }
