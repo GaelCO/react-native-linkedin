@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react-native';
 import LinkedInModal, { logError, onLoadStart } from '../src/LinkedInModal';
 
 test('<LinkedInModal /> render correctly', async () => {
-  render(
+  await render(
     <LinkedInModal
       onSuccess={() => {}}
       clientID="clientID"

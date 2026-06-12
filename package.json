@@ -44,10 +44,9 @@
     "@react-native/jest-preset": "0.85.3",
     "@react-native/metro-config": "0.85.3",
     "@react-native/typescript-config": "0.85.3",
-    "@testing-library/react-native": "^13.3.3",
+    "@testing-library/react-native": "^14.0.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.2.17",
-    "@types/react-test-renderer": "^19.1.0",
     "@types/uuid": "^10.0.0",
     "babel-preset-expo": "^56.0.15",
     "eslint": "^8.57.1",
@@ -62,7 +61,7 @@
     "react": "19.2.3",
     "react-native": "0.85.3",
     "react-native-webview": "13.16.1",
-    "react-test-renderer": "19.2.3",
+    "test-renderer": "^1.2.0",
     "typescript": "~5.9.3"
   },
   "peerDependencies": {
@@ -74,7 +73,7 @@
     "lib": "lib"
   },
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 22.13.0"
   },
   "packageManager": "yarn@4.16.0"
 }
