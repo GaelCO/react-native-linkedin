@@ -2067,7 +2067,6 @@ __metadata:
     "@testing-library/react-native": "npm:^14.0.1"
     "@types/jest": "npm:^29.5.14"
     "@types/react": "npm:~19.2.18"
-    "@types/uuid": "npm:^10.0.0"
     babel-preset-expo: "npm:^57.0.10"
     eslint: "npm:^8.57.1"
     eslint-plugin-ft-flow: "npm:^3.0.11"
@@ -2085,9 +2084,10 @@ __metadata:
     react-native-webview: "npm:14.0.1"
     test-renderer: "npm:^1.2.0"
     typescript: "npm:~5.9.3"
+    uuid: "npm:^14.0.2"
   peerDependencies:
     react: ">=19.1.0"
-    react-native: ">=0.81"
+    react-native: ">=0.81.1"
     react-native-webview: "*"
   languageName: unknown
   linkType: soft
@@ -3198,13 +3198,6 @@ __metadata:
   version: 4.0.5
   resolution: "@types/tough-cookie@npm:4.0.5"
   checksum: 10c0/68c6921721a3dcb40451543db2174a145ef915bc8bcbe7ad4e59194a0238e776e782b896c7a59f4b93ac6acefca9161fccb31d1ce3b3445cb6faa467297fb473
-  languageName: node
-  linkType: hard
-
-"@types/uuid@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@types/uuid@npm:10.0.0"
-  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
   languageName: node
   linkType: hard
 
@@ -10887,6 +10880,15 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10c0/02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "uuid@npm:14.0.2"
+  bin:
+    uuid: dist-node/bin/uuid
+  checksum: 10c0/88906237004db370b013129c8372a2149f6fa1aad7a5f78fa65ddf2ba0a8663097022300d81fa01f551efee9d6bbe8c7ab140dc6d49f1b03d289f855096990c9
   languageName: node
   linkType: hard
 
