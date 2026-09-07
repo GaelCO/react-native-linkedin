@@ -1,5 +1,4 @@
 import 'react-native';
-import React from 'react';
 import { render, screen } from '@testing-library/react-native';
 import LinkedInModal, { logError, onLoadStart } from '../src/LinkedInModal';
 

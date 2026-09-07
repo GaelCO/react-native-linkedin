@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import React, {
+import {
   ForwardedRef,
   forwardRef,
   ReactElement,
@@ -166,22 +166,19 @@ export default forwardRef(function LinkedInModal(
   // The component instance will be extended
   // with whatever you return from the callback passed
   // as the second argument
-  useImperativeHandle(
-    ref,
-    (): LinkedInModalRef => ({
-      open: async () => {
-        _open();
-      },
+  useImperativeHandle(ref, (): LinkedInModalRef => ({
+    open: async () => {
+      _open();
+    },
 
-      close: async () => {
-        _close();
-      },
+    close: async () => {
+      _close();
+    },
 
-      logoutAsync: async () => {
-        await _logoutAsync();
-      },
-    }),
-  );
+    logoutAsync: async () => {
+      await _logoutAsync();
+    },
+  }));
 
   const onNavigationStateChange = async ({ url }: { url: string }) => {
     if (url.includes(redirectUri) && !raceCondition) {

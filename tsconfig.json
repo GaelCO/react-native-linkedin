@@ -8,7 +8,7 @@
     "outDir": "./lib",
     "strict": true,
     "removeComments": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "target": "es2019",
     "module": "es6",
     "moduleResolution": "bundler",
