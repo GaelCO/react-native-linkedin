@@ -9,9 +9,8 @@
 Simple <strong>LinkedIn</strong> login library for <strong>React-Native</strong> with <i>WebView</i> into a <i>Modal</i>
 </p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-native-linkedin"><img src="https://badge.fury.io/js/react-native-linkedin.svg"></a>
-  <a href="https://www.npmjs.com/package/react-native-linkedin"><img src="https://img.shields.io/npm/dm/react-native-linkedin.svg?style=flat-square"></a>
-  <a href="https://travis-ci.org/GaelCO/react-native-linkedin"><img src="https://api.travis-ci.com/GaelCO/react-native-linkedin.svg?branch=main"></a>
+  <a href="https://www.npmjs.com/package/@gcou/react-native-linkedin"><img src="https://img.shields.io/npm/v/@gcou/react-native-linkedin.svg"></a>
+  <a href="https://www.npmjs.com/package/@gcou/react-native-linkedin"><img src="https://img.shields.io/npm/dm/@gcou/react-native-linkedin.svg?style=flat-square"></a>
 </p>
 
 <br />
@@ -46,7 +45,6 @@ You should be aware that key can be found if you store it directly to your code.
 ```tsx
   <LinkedInModal
     shouldGetAccessToken={false}
-    clientSecret={null}
     clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
     redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
     onSuccess={({ authentication_code }) => console.log(`Post this ${authentication_code} to your server.`)}
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
 })
 
 export default function AppContainer() : ReactElement {
-  linkedRef = useRef<LinkedInModalRef>(null);
+  const linkedRef = useRef<LinkedInModalRef>(null);
   
   return (
     <View style={styles.container}>
@@ -83,7 +81,7 @@ export default function AppContainer() : ReactElement {
         redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
         onSuccess={token => console.log(token)}
       />
-      <Button title="Log Out" onPress={this.linkedRef.current.logoutAsync()} />
+      <Button title="Log Out" onPress={() => linkedRef.current?.logoutAsync()} />
     </View>
   )
 }
@@ -112,6 +110,7 @@ export default function AppContainer() : ReactElement {
 | animationType            | Modal.propTypes.animationType | optional                                                                              | `fade`                              | Customize animationType style: 'none', 'slide' or 'fade'                                                                                                                                                 |
 | **shouldGetAccessToken** | bool                          | optional                                                                              | `true`                              | Set to false to receive the 'authorization code' rather then the 'access token'                                                                                                                          |
 | areaTouchText | object                        | optional       | `{top: 20, bottom: 20, left: 50, right: 50}`          | Set values for to increase the text touch area          |
+| isDisabled               | bool                           | optional                                                                              | `false`                              | Disable the LinkedIn login button                                                                                                                                                                        |
 
 ## Contribution
 
@@ -129,13 +128,13 @@ export default function AppContainer() : ReactElement {
 ```tsx
 <View style={styles.container}>
     <LinkedInModal
-      ref={this.linkedRef}
+      ref={linkedRef}
       clientID="[ Your client id from https://www.linkedin.com/developer/apps ]"
       clientSecret="[ Your client secret from https://www.linkedin.com/developer/apps ]"
       redirectUri="[ Your redirect uri set into https://www.linkedin.com/developer/apps ]"
       onSuccess={token => console.log(token)}
     />
-    <Button title="Log Out" onPress={this.linkedRef.current.logoutAsync()} />
+    <Button title="Log Out" onPress={() => linkedRef.current?.logoutAsync()} />
 </View>
 ```
 
