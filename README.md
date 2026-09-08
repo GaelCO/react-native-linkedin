@@ -28,6 +28,15 @@ Simple <strong>LinkedIn</strong> login library for <strong>React-Native</strong>
 $ yarn add @gcou/react-native-linkedin
 ```
 
+### Peer Dependencies
+
+| Package                          | Minimum version |
+| --------------------------------- | ---------------- |
+| react                             | >=19.1.0          |
+| react-native                      | >=0.81.1          |
+| react-native-get-random-values    | >=2.0.0           |
+| react-native-webview              | *                 |
+
 ## Security
 
 Please note that you should give your linkedin client id but not your secret key to this component.
