@@ -1,5 +1,5 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "@react-native/typescript-config",
   "include": ["src"],
   "exclude": ["**/node_modules", "**/Pods"],
   /* Recommended React Native TSConfig base */
@@ -33,7 +33,6 @@
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
     "lib": ["dom", "esnext"],
-    "typeRoots": ["./node_modules/@types", "./@types"],
-    "types": ["jest"]
+    "typeRoots": ["./node_modules/@types", "./@types"]
   },
 }

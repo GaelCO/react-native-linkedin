@@ -6,11 +6,12 @@ import {
   Button,
   ActivityIndicator,
   StatusBar,
+  Alert,
 } from 'react-native';
 
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URL } from './config';
 
-import LinkedInModal, { LinkedInToken } from './src/';
+import LinkedInModal, { LinkedInToken } from '@gcou/react-native-linkedin';
 
 const styles = StyleSheet.create({
   container: {
@@ -91,8 +92,7 @@ export default function AppContainer(): ReactElement {
       setMessage(payload?.message);
       setRefreshing(false);
     } else {
-      // eslint-disable-next-line no-alert
-      alert(`authentication_code = ${authentication_code}`);
+      Alert.alert(`authentication_code = ${authentication_code}`);
     }
   };
 

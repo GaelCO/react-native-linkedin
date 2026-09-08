@@ -28,12 +28,6 @@ Simple <strong>LinkedIn</strong> login library for <strong>React-Native</strong>
 $ yarn add @gcou/react-native-linkedin
 ```
 
-If your project uses expo >= 48, then you need to add expo-crypto to your project.
-The [uuid](https://www.npmjs.com/package/uuid) library uses the Expo module if present. If Expo >= 48, then the crypto elements are in the expo-crypto module
-```bash
-$ yarn add expo-crypto
-```
-
 ## Security
 
 Please note that you should give your linkedin client id but not your secret key to this component.
@@ -54,11 +48,11 @@ You should be aware that key can be found if you store it directly to your code.
 ## Example
 
 ```JavaScript
-// See ./App.tsx file for details
+// See ./example/App.tsx file for details
 import React, { ReactElement, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 
-import LinkedInModal, { LinkedInModalRef } from 'react-native-linkedin';
+import LinkedInModal, { LinkedInModalRef } from '@gcou/react-native-linkedin';
 
 const styles = StyleSheet.create({
   container: {
@@ -146,6 +140,6 @@ export default function AppContainer() : ReactElement {
 
 ## Licence
 
-[MIT](https://github.com/xcarpentier/react-native-linkedin/blob/master/LICENSE)
+[MIT](https://github.com/GaelCO/react-native-linkedin/blob/master/LICENSE)
 
 > made with ♥
